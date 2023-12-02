@@ -4,16 +4,16 @@ import { Entity, EntityConstructorPropsWithoutSrc, EntityModel, Material, Textur
 import { Shadow } from 'arx-level-generator/scripting/properties'
 import { loadOBJ } from 'arx-level-generator/tools/mesh'
 
-type PresentConstructorProps = Expand<
+type HatConstructorProps = Expand<
   EntityConstructorPropsWithoutSrc & {
-    variant: 'blue' | 'red'
+    // TODO
   }
 >
 
 const textures = [
   Material.fromTexture(
     Texture.fromCustomFile({
-      filename: 'wrap1.jpg',
+      filename: 'whitefluff.jpg',
       sourcePath: './export_textures/',
     }),
     {
@@ -22,16 +22,7 @@ const textures = [
   ),
   Material.fromTexture(
     Texture.fromCustomFile({
-      filename: 'wrap2.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.Tiled,
-    },
-  ),
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'blue_ribbon.jpg',
+      filename: 'redfluff.jpg',
       sourcePath: './export_textures/',
     }),
     {
@@ -40,22 +31,22 @@ const textures = [
   ),
 ]
 
-const presentMesh = await loadOBJ('redbox', {
+const hatMesh = await loadOBJ('hat', {
   materialFlags: ArxPolygonFlags.Tiled,
   scale: 0.2,
 })
 
-export class Present extends Entity {
-  constructor({ variant, ...props }: PresentConstructorProps) {
+export class Hat extends Entity {
+  constructor({ ...props }: HatConstructorProps) {
     super({
-      src: 'items/provisions/present',
+      src: 'items/provisions/hat',
       inventoryIcon: Texture.fromCustomFile({
         filename: 'present[icon].bmp',
         sourcePath: '.',
       }),
-      model: EntityModel.fromThreeJsObj(presentMesh[0], {
-        filename: 'present_.ftl',
-        originIdx: 80,
+      model: EntityModel.fromThreeJsObj(hatMesh[0], {
+        filename: 'hat.ftl',
+        originIdx: 0,
       }),
       otherDependencies: textures,
       ...props,
@@ -64,13 +55,5 @@ export class Present extends Entity {
     this.withScript()
 
     this.script?.properties.push(Shadow.off)
-
-    this.script?.on('init', () => {
-      if (variant === 'blue') {
-        return 'tweak skin "tileable-wrap1" "tileable-wrap2"'
-      }
-
-      return ''
-    })
   }
 }

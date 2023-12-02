@@ -4,7 +4,9 @@ import { Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
 import { applyTransformations } from 'arx-level-generator/utils'
 import { Vector2 } from 'three'
+import { Hat } from './entities/hat.js'
 import { Present } from './entities/present.js'
+import { XmasTree } from './entities/xmasTree.js'
 
 const settings = new Settings()
 
@@ -50,7 +52,15 @@ const present2 = new Present({
   variant: 'blue',
 })
 
-map.entities.push(present1, present2)
+const hat = new Hat({
+  position: new Vector3(0, -100, 250),
+})
+
+const xmasTree = new XmasTree({
+  position: new Vector3(400, -100, 250),
+})
+
+map.entities.push(present1, present2, hat, xmasTree)
 
 const overheadLight = createLight({
   position: new Vector3(0, -500, 0),
