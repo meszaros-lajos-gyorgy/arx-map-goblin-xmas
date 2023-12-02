@@ -53,13 +53,13 @@ export const blueBox = await loadOBJ('blueboxobj', {
 export class Present extends Entity {
   constructor({ variant, ...props }: TreeConstructorProps) {
     super({
-      src: 'items/provisions/present-' + variant,
+      src: 'items/provisions/present_' + variant,
       inventoryIcon: Texture.fromCustomFile({
         filename: 'present[icon].bmp',
         sourcePath: '.',
       }),
       model: EntityModel.fromThreeJsObj(variant === 'blue' ? blueBox[0] : redBox[0], {
-        filename: 'present-' + variant + '.ftl',
+        filename: 'present_' + variant + '.ftl',
         originIdx: variant === 'blue' ? 0 : 80,
       }),
       otherDependencies: textures,
