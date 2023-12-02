@@ -6,7 +6,7 @@ import { loadOBJ } from 'arx-level-generator/tools/mesh'
 
 type TreeConstructorProps = Expand<
   EntityConstructorPropsWithoutSrc & {
-    // TODO
+    variant: 'blue' | 'red'
   }
 >
 
@@ -40,22 +40,27 @@ const textures = [
   ),
 ]
 
-export const mesh = await loadOBJ('redboxobj', {
+export const redBox = await loadOBJ('redboxobj', {
+  materialFlags: ArxPolygonFlags.Tiled,
+  scale: 0.2,
+})
+
+export const blueBox = await loadOBJ('blueboxobj', {
   materialFlags: ArxPolygonFlags.Tiled,
   scale: 0.2,
 })
 
 export class Present extends Entity {
-  constructor({ ...props }: TreeConstructorProps = {}) {
+  constructor({ variant, ...props }: TreeConstructorProps) {
     super({
-      src: 'items/provisions/present',
+      src: 'items/provisions/present-' + variant,
       inventoryIcon: Texture.fromCustomFile({
         filename: 'present[icon].bmp',
         sourcePath: '.',
       }),
-      model: EntityModel.fromThreeJsObj(mesh[0], {
-        filename: 'present.ftl',
-        originIdx: 80,
+      model: EntityModel.fromThreeJsObj(variant === 'blue' ? blueBox[0] : redBox[0], {
+        filename: 'present-' + variant + '.ftl',
+        originIdx: variant === 'blue' ? 0 : 80,
       }),
       otherDependencies: textures,
       ...props,

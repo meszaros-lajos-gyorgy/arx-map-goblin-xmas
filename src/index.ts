@@ -40,11 +40,17 @@ meshes.forEach((mesh) => {
   })
 })
 
-const present = new Present({
+const present1 = new Present({
   position: new Vector3(100, -10, 300),
+  variant: 'red',
 })
 
-map.entities.push(present)
+const present2 = new Present({
+  position: new Vector3(150, -10, 300),
+  variant: 'blue',
+})
+
+map.entities.push(present1, present2)
 
 const overheadLight = createLight({
   position: new Vector3(0, -500, 0),
