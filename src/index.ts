@@ -1,18 +1,10 @@
-import {
-  ArxMap,
-  DONT_QUADIFY,
-  Entity,
-  HudElements,
-  Rotation,
-  SHADING_SMOOTH,
-  Settings,
-  Texture,
-  Vector3,
-} from 'arx-level-generator'
+import { ArxMap, DONT_QUADIFY, HudElements, SHADING_SMOOTH, Settings, Texture, Vector3 } from 'arx-level-generator'
 import { createPlaneMesh } from 'arx-level-generator/prefabs/mesh'
-import { Interactivity, Shadow, Speed } from 'arx-level-generator/scripting/properties'
+import { Speed } from 'arx-level-generator/scripting/properties'
+import { createLight } from 'arx-level-generator/tools'
 import { applyTransformations } from 'arx-level-generator/utils'
 import { Vector2 } from 'three'
+import { Present } from './entities/present.js'
 
 const settings = new Settings()
 
@@ -47,6 +39,18 @@ meshes.forEach((mesh) => {
     shading: SHADING_SMOOTH,
   })
 })
+
+const present = new Present({
+  position: new Vector3(100, -10, 300),
+})
+
+map.entities.push(present)
+
+const overheadLight = createLight({
+  position: new Vector3(0, -500, 0),
+  radius: 1000,
+})
+map.lights.push(overheadLight)
 
 // ----------------------
 
