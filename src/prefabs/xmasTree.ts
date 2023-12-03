@@ -26,7 +26,7 @@ const textures = [
       sourcePath: './export_textures/',
     }),
     {
-      flags: ArxPolygonFlags.Tiled,
+      flags: ArxPolygonFlags.None,
     },
   ),
   Material.fromTexture(
@@ -44,7 +44,7 @@ const textures = [
       sourcePath: './export_textures/',
     }),
     {
-      flags: ArxPolygonFlags.Tiled,
+      flags: ArxPolygonFlags.None,
     },
   ),
   Material.fromTexture(
@@ -53,7 +53,7 @@ const textures = [
       sourcePath: './export_textures/',
     }),
     {
-      flags: ArxPolygonFlags.Tiled,
+      flags: ArxPolygonFlags.DoubleSided | ArxPolygonFlags.Tiled,
     },
   ),
   Material.fromTexture(
@@ -62,7 +62,7 @@ const textures = [
       sourcePath: './export_textures/',
     }),
     {
-      flags: ArxPolygonFlags.Tiled,
+      flags: ArxPolygonFlags.None,
     },
   ),
   Material.fromTexture(
@@ -80,7 +80,7 @@ const textures = [
       sourcePath: './export_textures/',
     }),
     {
-      flags: ArxPolygonFlags.Tiled,
+      flags: ArxPolygonFlags.None,
     },
   ),
 
@@ -104,25 +104,22 @@ const textures = [
   ),
 ]
 
-const xmasTreeMesh = await loadOBJ('xmastree', {
-  materialFlags: ArxPolygonFlags.Tiled,
-  scale: 0.2,
+export const xmasTreeMesh = await loadOBJ('xmastree', {
+  materialFlags: (t) => {
+    if (
+      t.filename.startsWith('red.') ||
+      t.filename.startsWith('blue.') ||
+      t.filename.startsWith('yellow.') ||
+      t.filename.startsWith('pink.')
+    ) {
+      return ArxPolygonFlags.None
+    }
+
+    if (t.filename.startsWith('pngwing')) {
+      return ArxPolygonFlags.DoubleSided | ArxPolygonFlags.Tiled
+    }
+
+    return ArxPolygonFlags.Tiled
+  },
+  scale: 0.5,
 })
-
-export class XmasTree extends Entity {
-  constructor({ ...props }: XmasTreeConstructorProps) {
-    super({
-      src: 'fix_inter/xmas_tree',
-      model: EntityModel.fromThreeJsObj(xmasTreeMesh[0], {
-        filename: 'xmas_tree.ftl',
-        originIdx: 0,
-      }),
-      otherDependencies: textures,
-      ...props,
-    })
-
-    this.withScript()
-
-    this.script?.properties.push(Shadow.off)
-  }
-}

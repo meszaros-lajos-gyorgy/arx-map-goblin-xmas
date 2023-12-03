@@ -1,12 +1,21 @@
-import { ArxMap, DONT_QUADIFY, HudElements, SHADING_SMOOTH, Settings, Texture, Vector3 } from 'arx-level-generator'
+import {
+  ArxMap,
+  DONT_QUADIFY,
+  HudElements,
+  QUADIFY,
+  SHADING_SMOOTH,
+  Settings,
+  Texture,
+  Vector3,
+} from 'arx-level-generator'
 import { createPlaneMesh } from 'arx-level-generator/prefabs/mesh'
 import { Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
 import { applyTransformations } from 'arx-level-generator/utils'
-import { Vector2 } from 'three'
+import { MathUtils, Vector2 } from 'three'
 import { Hat } from './entities/hat.js'
 import { Present } from './entities/present.js'
-import { XmasTree } from './entities/xmasTree.js'
+import { xmasTreeMesh } from './prefabs/xmasTree.js'
 
 const settings = new Settings()
 
@@ -25,7 +34,7 @@ await map.i18n.addFromFile('./i18n.json', settings)
 
 const plane = createPlaneMesh({
   size: new Vector2(1000, 1000),
-  texture: Texture.aliciaRoomMur01,
+  texture: Texture.uvDebugTexture,
 })
 
 const meshes = [plane]
@@ -37,36 +46,45 @@ meshes.forEach((mesh) => {
   mesh.translateZ(map.config.offset.z)
   applyTransformations(mesh)
   map.polygons.addThreeJsMesh(mesh, {
-    tryToQuadify: DONT_QUADIFY,
+    tryToQuadify: QUADIFY,
     shading: SHADING_SMOOTH,
   })
 })
 
+// -------------------------
+
 const present1 = new Present({
-  position: new Vector3(100, -10, 300),
+  position: new Vector3(300, -10, 300),
   variant: 'red',
 })
 
 const present2 = new Present({
-  position: new Vector3(150, -10, 300),
+  position: new Vector3(350, -10, 300),
   variant: 'blue',
 })
 
 const hat = new Hat({
-  position: new Vector3(0, -100, 250),
+  position: new Vector3(200, -100, 250),
 })
 
-const xmasTree = new XmasTree({
-  position: new Vector3(400, -100, 250),
-})
-
-map.entities.push(present1, present2, hat, xmasTree)
+map.entities.push(present1, present2, hat)
 
 const overheadLight = createLight({
-  position: new Vector3(0, -500, 0),
-  radius: 1000,
+  position: new Vector3(0, -800, 0),
+  radius: 2000,
+  intensity: 3,
 })
 map.lights.push(overheadLight)
+
+// ----------------------
+
+xmasTreeMesh[0].geometry.rotateY(MathUtils.degToRad(117))
+applyTransformations(xmasTreeMesh[0])
+xmasTreeMesh[0].geometry.translate(map.config.offset.x, map.config.offset.y - 200, map.config.offset.z + 200)
+
+map.polygons.addThreeJsMesh(xmasTreeMesh[0], { shading: SHADING_SMOOTH, tryToQuadify: DONT_QUADIFY })
+
+map.polygons.selectByTextures(['pngwing.com.png']).flipUVVertically()
 
 // ----------------------
 
