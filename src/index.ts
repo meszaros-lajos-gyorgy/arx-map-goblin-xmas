@@ -11,11 +11,12 @@ import {
 import { createPlaneMesh } from 'arx-level-generator/prefabs/mesh'
 import { Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
-import { applyTransformations } from 'arx-level-generator/utils'
+import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils'
 import { MathUtils, Vector2 } from 'three'
-import { Hat } from './entities/hat.js'
-import { Present } from './entities/present.js'
-import { xmasTreeMesh } from './prefabs/xmasTree.js'
+
+// import { Hat } from './entities/hat.js'
+// import { Present } from './entities/present.js'
+// import { xmasTreeMesh } from './prefabs/xmasTree.js'
 
 const settings = new Settings()
 
@@ -53,6 +54,7 @@ meshes.forEach((mesh) => {
 
 // -------------------------
 
+/*
 const present1 = new Present({
   position: new Vector3(300, -10, 300),
   variant: 'red',
@@ -69,13 +71,6 @@ const hat = new Hat({
 
 map.entities.push(present1, present2, hat)
 
-const overheadLight = createLight({
-  position: new Vector3(0, -800, 0),
-  radius: 2000,
-  intensity: 3,
-})
-map.lights.push(overheadLight)
-
 // ----------------------
 
 xmasTreeMesh[0].geometry.rotateY(MathUtils.degToRad(117))
@@ -85,6 +80,18 @@ xmasTreeMesh[0].geometry.translate(map.config.offset.x, map.config.offset.y - 20
 map.polygons.addThreeJsMesh(xmasTreeMesh[0], { shading: SHADING_SMOOTH, tryToQuadify: DONT_QUADIFY })
 
 map.polygons.selectByTextures(['pngwing.com.png']).flipUVVertically()
+*/
+
+// ----------------------
+
+const overheadLights = circleOfVectors(new Vector3(0, -800, 0), 300, 3).map((position) => {
+  return createLight({
+    position,
+    radius: 2000,
+    intensity: 3,
+  })
+})
+map.lights.push(...overheadLights)
 
 // ----------------------
 
