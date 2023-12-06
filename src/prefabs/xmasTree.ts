@@ -1,129 +1,24 @@
-// xmastree
-
-/*
-import { ArxPolygonFlags } from 'arx-convert/types'
-import { Expand } from 'arx-convert/utils'
-import { Entity, EntityConstructorPropsWithoutSrc, EntityModel, Material, Texture } from 'arx-level-generator'
-import { Shadow } from 'arx-level-generator/scripting/properties'
+import { Rotation, Vector3 } from 'arx-level-generator'
 import { loadOBJ } from 'arx-level-generator/tools/mesh'
+import { Vector2 } from 'three'
 
-type XmasTreeConstructorProps = Expand<
-  EntityConstructorPropsWithoutSrc & {
-    // TODO
-  }
->
+type createXmasTreeProps = {
+  position?: Vector3
+  orientation?: Rotation
+  scale?: number
+}
 
-const textures = [
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'bark.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.Tiled,
-    },
-  ),
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'blue.png',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.None,
-    },
-  ),
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'redboa.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.Tiled,
-    },
-  ),
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'pink.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.None,
-    },
-  ),
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'pngwing.com.png',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.DoubleSided | ArxPolygonFlags.Tiled,
-    },
-  ),
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'red.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.None,
-    },
-  ),
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'red_glitter.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.Tiled,
-    },
-  ),
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'yellow.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.None,
-    },
-  ),
+export const createXmasTree = async ({
+  position = new Vector3(0, 0, 0),
+  orientation,
+  scale = 1,
+}: createXmasTreeProps = {}) => {
+  const mesh = await loadOBJ('./models/xmastree', {
+    position: position.clone().add(new Vector3(0, -300 * scale, 0)),
+    scale,
+    scaleUV: new Vector2(1, -1),
+    orientation,
+  })
 
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'whitefluff.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.Tiled,
-    },
-  ),
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'redfluff.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.Tiled,
-    },
-  ),
-]
-
-export const xmasTreeMesh = await loadOBJ('xmastree', {
-  materialFlags: (t) => {
-    if (
-      t.filename.startsWith('red.') ||
-      t.filename.startsWith('blue.') ||
-      t.filename.startsWith('yellow.') ||
-      t.filename.startsWith('pink.')
-    ) {
-      return ArxPolygonFlags.None
-    }
-
-    if (t.filename.startsWith('pngwing')) {
-      return ArxPolygonFlags.DoubleSided | ArxPolygonFlags.Tiled
-    }
-
-    return ArxPolygonFlags.Tiled
-  },
-  scale: 0.5,
-})
-*/
+  return mesh
+}

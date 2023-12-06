@@ -1,9 +1,20 @@
-import { ArxMap, HudElements, QUADIFY, SHADING_SMOOTH, Settings, Texture, Vector3 } from 'arx-level-generator'
+import {
+  ArxMap,
+  DONT_QUADIFY,
+  HudElements,
+  QUADIFY,
+  Rotation,
+  SHADING_SMOOTH,
+  Settings,
+  Texture,
+  Vector3,
+} from 'arx-level-generator'
 import { createPlaneMesh } from 'arx-level-generator/prefabs/mesh'
 import { Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
 import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils'
-import { Vector2 } from 'three'
+import { MathUtils, Vector2 } from 'three'
+import { createXmasTree } from './prefabs/xmasTree.js'
 
 const settings = new Settings()
 
@@ -38,6 +49,21 @@ const overheadLights = circleOfVectors(new Vector3(0, -800, 0), 300, 3).map((pos
   })
 })
 map.lights.push(...overheadLights)
+
+// ----------------------
+
+const xmasTree = await createXmasTree({
+  position: new Vector3(0, 0, 300),
+  orientation: new Rotation(0, MathUtils.degToRad(90), 0),
+})
+xmasTree.forEach((mesh) => {
+  applyTransformations(mesh)
+  mesh.translateX(map.config.offset.x)
+  mesh.translateY(map.config.offset.y)
+  mesh.translateZ(map.config.offset.z)
+  applyTransformations(mesh)
+  map.polygons.addThreeJsMesh(mesh, { tryToQuadify: DONT_QUADIFY, shading: SHADING_SMOOTH })
+})
 
 // ----------------------
 
