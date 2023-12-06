@@ -33,24 +33,13 @@ await map.i18n.addFromFile('./i18n.json', settings)
 
 // ----------------------
 
-const plane = createPlaneMesh({
-  size: new Vector2(1000, 1000),
-  texture: Texture.uvDebugTexture,
-})
-
-const meshes = [plane]
-
-meshes.forEach((mesh) => {
-  applyTransformations(mesh)
-  mesh.translateX(map.config.offset.x)
-  mesh.translateY(map.config.offset.y)
-  mesh.translateZ(map.config.offset.z)
-  applyTransformations(mesh)
-  map.polygons.addThreeJsMesh(mesh, {
-    tryToQuadify: QUADIFY,
-    shading: SHADING_SMOOTH,
-  })
-})
+const plane = createPlaneMesh({ size: new Vector2(1000, 1000), texture: Texture.uvDebugTexture })
+applyTransformations(plane)
+plane.translateX(map.config.offset.x)
+plane.translateY(map.config.offset.y)
+plane.translateZ(map.config.offset.z)
+applyTransformations(plane)
+map.polygons.addThreeJsMesh(plane, { tryToQuadify: QUADIFY, shading: SHADING_SMOOTH })
 
 // -------------------------
 
