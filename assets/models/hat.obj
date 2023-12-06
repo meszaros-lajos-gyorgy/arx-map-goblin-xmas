@@ -1,6 +1,6 @@
 # Blender 4.0.1
 # www.blender.org
-mtllib hat.mtl
+mtllib Hat.mtl
 o body.001
 v -0.000029 -0.507800 -0.610000
 v -0.000029 0.123361 -0.478796

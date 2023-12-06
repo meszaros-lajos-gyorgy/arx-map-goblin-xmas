@@ -1,7 +1,7 @@
-# Blender 4.0.1 MTL File: 'Christmas tree.blend'
+# Blender 4.0.2 MTL File: 'Vending machine.blend'
 # www.blender.org
 
-newmtl bark
+newmtl 05glass
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -9,9 +9,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd export_textures/bark.jpg
+map_Kd ../textures/05_glass_cola.jpg
 
-newmtl blue
+newmtl banner
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -19,9 +19,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd export_textures/blue.png
+map_Kd ../textures/cavecola_banner.jpg
 
-newmtl boa
+newmtl border
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -29,9 +29,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd export_textures/redboa.jpg
+map_Kd ../textures/black.jpg
 
-newmtl pink
+newmtl cavecola_mm
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -39,19 +39,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd export_textures/pink.jpg
+map_Kd ../textures/cavecola_mm.jpg
 
-newmtl pngwing.com
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-illum 2
-map_Kd export_textures/pngwing.com.png
-map_d export_textures/pngwing.com.png
-
-newmtl red
+newmtl cavecola_nostalgy
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -59,9 +49,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd export_textures/red.jpg
+map_Kd ../textures/cavecola.png
 
-newmtl red_glitter
+newmtl cavecola_wg
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -69,9 +59,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd export_textures/red_glitter.jpg
+map_Kd ../textures/cavecola_wg.jpg
 
-newmtl yellow
+newmtl coin_slot
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -79,4 +69,14 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd export_textures/yellow.jpg
+map_Kd ../textures/coinslot.png
+
+newmtl white
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../textures/white.jpg
