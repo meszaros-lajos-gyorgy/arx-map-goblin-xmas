@@ -1,3 +1,4 @@
+/*
 import { ArxPolygonFlags } from 'arx-convert/types'
 import { Expand } from 'arx-convert/utils'
 import { Entity, EntityConstructorPropsWithoutSrc, EntityModel, Material, Texture } from 'arx-level-generator'
@@ -57,3 +58,4 @@ export class Hat extends Entity {
     this.script?.properties.push(Shadow.off)
   }
 }
+*/

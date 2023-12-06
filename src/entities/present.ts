@@ -1,3 +1,4 @@
+/*
 import { ArxPolygonFlags } from 'arx-convert/types'
 import { Expand } from 'arx-convert/utils'
 import { Entity, EntityConstructorPropsWithoutSrc, EntityModel, Material, Texture } from 'arx-level-generator'
@@ -74,3 +75,4 @@ export class Present extends Entity {
     })
   }
 }
+*/
