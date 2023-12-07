@@ -1,6 +1,6 @@
 import { Texture } from 'arx-level-generator'
 
-const textureDirectory = './textures/'
+const textureDirectory = './3d models + textures/'
 
 export const bark = Texture.fromCustomFile({
   filename: 'bark.jpg',
@@ -12,18 +12,18 @@ export const blue = Texture.fromCustomFile({
   sourcePath: textureDirectory,
 })
 
-export const redBoa = Texture.fromCustomFile({
-  filename: 'redboa.jpg',
-  sourcePath: textureDirectory,
-})
-
 export const pink = Texture.fromCustomFile({
   filename: 'pink.jpg',
   sourcePath: textureDirectory,
 })
 
 export const pineNeedles = Texture.fromCustomFile({
-  filename: 'pine_needles.png',
+  filename: 'pngwing.com.png',
+  sourcePath: textureDirectory,
+})
+
+export const redGlitter = Texture.fromCustomFile({
+  filename: 'red_glitter.jpg',
   sourcePath: textureDirectory,
 })
 
@@ -32,8 +32,8 @@ export const red = Texture.fromCustomFile({
   sourcePath: textureDirectory,
 })
 
-export const redGlitter = Texture.fromCustomFile({
-  filename: 'red_glitter.jpg',
+export const redBoa = Texture.fromCustomFile({
+  filename: 'redboa.jpg',
   sourcePath: textureDirectory,
 })
 
