@@ -1,9 +1,8 @@
-/*
-import { ArxPolygonFlags } from 'arx-convert/types'
 import { Expand } from 'arx-convert/utils'
-import { Entity, EntityConstructorPropsWithoutSrc, EntityModel, Material, Texture } from 'arx-level-generator'
+import { Entity, EntityConstructorPropsWithoutSrc, EntityModel, Rotation, Texture } from 'arx-level-generator'
 import { Shadow } from 'arx-level-generator/scripting/properties'
-import { loadOBJ } from 'arx-level-generator/tools/mesh'
+import { MathUtils } from 'three'
+import { createHat, hatTextures } from '@/prefabs/hat.js'
 
 type HatConstructorProps = Expand<
   EntityConstructorPropsWithoutSrc & {
@@ -11,51 +10,54 @@ type HatConstructorProps = Expand<
   }
 >
 
-const textures = [
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'whitefluff.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.Tiled,
-    },
-  ),
-  Material.fromTexture(
-    Texture.fromCustomFile({
-      filename: 'redfluff.jpg',
-      sourcePath: './export_textures/',
-    }),
-    {
-      flags: ArxPolygonFlags.Tiled,
-    },
-  ),
-]
-
-const hatMesh = await loadOBJ('hat', {
-  materialFlags: ArxPolygonFlags.Tiled,
-  scale: 0.2,
+const hatMesh = await createHat({
+  orientation: new Rotation(0, MathUtils.degToRad(180), 0),
+  scale: 0.8,
 })
 
 export class Hat extends Entity {
-  constructor({ ...props }: HatConstructorProps) {
+  constructor({ ...props }: HatConstructorProps = {}) {
     super({
-      src: 'items/provisions/hat',
+      src: 'items/armor/hat',
       inventoryIcon: Texture.fromCustomFile({
-        filename: 'present[icon].bmp',
-        sourcePath: '.',
+        filename: 'hat.bmp',
+        sourcePath: './2d icons/',
       }),
       model: EntityModel.fromThreeJsObj(hatMesh[0], {
         filename: 'hat.ftl',
-        originIdx: 0,
+        originIdx: 871,
+        actionPoints: [{ name: 'bottom', vertexIdx: 1001, action: -1, sfx: -1 }],
       }),
-      otherDependencies: textures,
+      otherDependencies: hatTextures,
       ...props,
     })
 
     this.withScript()
 
-    this.script?.properties.push(Shadow.off)
+    this.script?.appendRaw(`
+ON INIT {
+  setname "christmas cap"
+  SET_MATERIAL CLOTH
+  SET_ARMOR_MATERIAL LEATHER
+  SET_GROUP ARMORY
+  SETPLAYERTWEAK MESH "human_leather_Black.teo"
+  SETOBJECTTYPE HELMET
+  SETEQUIP armor_class 2
+  SETEQUIP defense 2
+  SET_DURABILITY 100
+  ${Shadow.off}
+  ACCEPT
+}
+
+ON INVENTORYUSE {
+  EQUIP PLAYER
+  ACCEPT
+}
+
+ON EQUIPIN {
+  PLAY "equip_armor"
+  ACCEPT
+}
+    `)
   }
 }
-*/

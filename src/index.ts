@@ -5,6 +5,7 @@ import {
   HudElements,
   QUADIFY,
   Rotation,
+  SHADING_FLAT,
   SHADING_SMOOTH,
   Settings,
   Texture,
@@ -15,8 +16,8 @@ import { Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
 import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils'
 import { MathUtils, Vector2 } from 'three'
-import { createHat } from './prefabs/hat.js'
-import { createXmasTree } from './prefabs/xmasTree.js'
+import { createXmasTree } from '@/prefabs/xmasTree.js'
+import { Hat } from './entities/hat.js'
 
 const settings = new Settings()
 
@@ -33,13 +34,16 @@ await map.i18n.addFromFile('./i18n.json', settings)
 
 // ----------------------
 
-const plane = createPlaneMesh({ size: new Vector2(1000, 1000), texture: Texture.uvDebugTexture })
+const plane = createPlaneMesh({
+  size: new Vector2(1000, 1000),
+  texture: new Texture({ filename: 'L1_DRAGON_[ICE]_GROUND05.jpg' }),
+})
 applyTransformations(plane)
 plane.translateX(map.config.offset.x)
 plane.translateY(map.config.offset.y)
 plane.translateZ(map.config.offset.z)
 applyTransformations(plane)
-map.polygons.addThreeJsMesh(plane, { tryToQuadify: QUADIFY, shading: SHADING_SMOOTH })
+map.polygons.addThreeJsMesh(plane, { tryToQuadify: QUADIFY, shading: SHADING_FLAT })
 
 // ----------------------
 
@@ -55,16 +59,12 @@ map.lights.push(...overheadLights)
 // ----------------------
 
 const xmasTree = await createXmasTree({
-  position: new Vector3(0, 0, 300),
+  position: new Vector3(-300, 0, 300),
   orientation: new Rotation(0, MathUtils.degToRad(90), 0),
   scale: 0.8,
 })
-const hat = await createHat({
-  position: new Vector3(300, -150, 200),
-  scale: 0.9,
-})
 
-const prefabs = [xmasTree, hat]
+const prefabs = [xmasTree]
 prefabs.flat().forEach((mesh) => {
   applyTransformations(mesh)
   mesh.translateX(map.config.offset.x)
@@ -76,13 +76,22 @@ prefabs.flat().forEach((mesh) => {
 
 // ----------------------
 
+const hat = new Hat({
+  position: new Vector3(0, 0, 300),
+})
+
 const goblin = new Entity({
   src: 'npc/goblin_base/',
   id: 1000,
-  position: new Vector3(300, 0, 220),
+  position: new Vector3(0, 0, 200),
   orientation: new Rotation(0, MathUtils.degToRad(180), 0),
 })
-map.entities.push(goblin)
+goblin.withScript()
+goblin.script?.on('initend', () => {
+  return `attach ${hat.ref} "bottom" self "view_attach"`
+})
+
+map.entities.push(goblin, hat)
 
 // ----------------------
 
