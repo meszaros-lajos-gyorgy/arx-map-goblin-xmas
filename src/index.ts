@@ -1,6 +1,7 @@
 import {
   ArxMap,
   DONT_QUADIFY,
+  Entity,
   HudElements,
   QUADIFY,
   Rotation,
@@ -14,6 +15,7 @@ import { Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
 import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils'
 import { MathUtils, Vector2 } from 'three'
+import { createHat } from './prefabs/hat.js'
 import { createXmasTree } from './prefabs/xmasTree.js'
 
 const settings = new Settings()
@@ -55,8 +57,15 @@ map.lights.push(...overheadLights)
 const xmasTree = await createXmasTree({
   position: new Vector3(0, 0, 300),
   orientation: new Rotation(0, MathUtils.degToRad(90), 0),
+  scale: 0.8,
 })
-xmasTree.forEach((mesh) => {
+const hat = await createHat({
+  position: new Vector3(300, -150, 200),
+  scale: 0.9,
+})
+
+const prefabs = [xmasTree, hat]
+prefabs.flat().forEach((mesh) => {
   applyTransformations(mesh)
   mesh.translateX(map.config.offset.x)
   mesh.translateY(map.config.offset.y)
@@ -64,6 +73,16 @@ xmasTree.forEach((mesh) => {
   applyTransformations(mesh)
   map.polygons.addThreeJsMesh(mesh, { tryToQuadify: DONT_QUADIFY, shading: SHADING_SMOOTH })
 })
+
+// ----------------------
+
+const goblin = new Entity({
+  src: 'npc/goblin_base/',
+  id: 1000,
+  position: new Vector3(300, 0, 220),
+  orientation: new Rotation(0, MathUtils.degToRad(180), 0),
+})
+map.entities.push(goblin)
 
 // ----------------------
 
