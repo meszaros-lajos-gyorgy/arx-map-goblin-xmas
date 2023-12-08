@@ -14,7 +14,7 @@ export const createGiftBox = async ({
 }: createGiftBoxProps = {}) => {
   const scale = 0.1 * rawScale
 
-  return await loadOBJ('./3d models + textures/Giftbox', {
+  return loadOBJ('./3d models + textures/Giftbox', {
     position: position.clone().add(new Vector3(0, -130 * scale, 0)),
     scale,
     orientation,

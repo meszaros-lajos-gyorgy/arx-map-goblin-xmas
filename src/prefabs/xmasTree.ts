@@ -13,7 +13,7 @@ export const createXmasTree = async ({
   orientation,
   scale = 1,
 }: createXmasTreeProps = {}) => {
-  return await loadOBJ('./3d models + textures/xmastree', {
+  return loadOBJ('./3d models + textures/xmastree', {
     position: position.clone().add(new Vector3(0, -300 * scale, 0)),
     scale,
     scaleUV: new Vector2(1, -1),

@@ -14,7 +14,7 @@ export const createHat = async ({
 }: createHatProps = {}) => {
   const scale = 0.1 * rawScale
 
-  return await loadOBJ('./3d models + textures/Hat', {
+  return loadOBJ('./3d models + textures/Hat', {
     position: position.clone().add(new Vector3(0, -130 * scale, 0)),
     scale,
     orientation,
