@@ -1,4 +1,3 @@
-import { ArxPolygonFlags } from 'arx-convert/types'
 import { Rotation, Vector3 } from 'arx-level-generator'
 import { loadOBJ } from 'arx-level-generator/tools/mesh'
 import { Vector2 } from 'three'
@@ -14,16 +13,16 @@ export const createXmasTree = async ({
   orientation,
   scale = 1,
 }: createXmasTreeProps = {}) => {
-  const mesh = await loadOBJ('./3d models + textures/xmastree', {
+  return await loadOBJ('./3d models + textures/xmastree', {
     position: position.clone().add(new Vector3(0, -300 * scale, 0)),
     scale,
     scaleUV: new Vector2(1, -1),
     orientation,
-    materialFlags: (texture) => {
-      texture.sourcePath = './3d models + textures/Texture/'
-      return ArxPolygonFlags.DoubleSided | ArxPolygonFlags.Tiled
+    materialFlags: (texture, flags) => {
+      if (!texture.isInternalAsset) {
+        texture.sourcePath = './3d models + textures/Texture/'
+      }
+      return flags
     },
   })
-
-  return mesh
 }

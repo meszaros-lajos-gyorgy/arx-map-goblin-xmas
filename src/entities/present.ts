@@ -41,7 +41,7 @@ const textures = [
   ),
 ]
 
-const presentMesh = await loadOBJ('redbox', {
+const {meshes: presentMesh} = await loadOBJ('redbox', {
   materialFlags: ArxPolygonFlags.Tiled,
   scale: 0.2,
 })

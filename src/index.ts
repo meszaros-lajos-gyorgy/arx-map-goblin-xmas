@@ -18,6 +18,7 @@ import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils
 import { MathUtils, Vector2 } from 'three'
 import { createXmasTree } from '@/prefabs/xmasTree.js'
 import { Hat } from './entities/hat.js'
+import { createGiftBox } from './prefabs/giftBox.js'
 
 const settings = new Settings()
 
@@ -58,13 +59,18 @@ map.lights.push(...overheadLights)
 
 // ----------------------
 
-const xmasTree = await createXmasTree({
+const { meshes: xmasTree } = await createXmasTree({
   position: new Vector3(-300, 0, 300),
   orientation: new Rotation(0, MathUtils.degToRad(90), 0),
   scale: 0.8,
 })
 
-const prefabs = [xmasTree]
+const { meshes: giftBox } = await createGiftBox({
+  position: new Vector3(300, 0, 250),
+})
+
+const prefabs = [xmasTree, giftBox]
+
 prefabs.flat().forEach((mesh) => {
   applyTransformations(mesh)
   mesh.translateX(map.config.offset.x)

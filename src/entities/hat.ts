@@ -2,7 +2,7 @@ import { Expand } from 'arx-convert/utils'
 import { Entity, EntityConstructorPropsWithoutSrc, EntityModel, Rotation, Texture } from 'arx-level-generator'
 import { Shadow } from 'arx-level-generator/scripting/properties'
 import { MathUtils } from 'three'
-import { createHat, hatTextures } from '@/prefabs/hat.js'
+import { createHat } from '@/prefabs/hat.js'
 
 type HatConstructorProps = Expand<
   EntityConstructorPropsWithoutSrc & {
@@ -10,7 +10,7 @@ type HatConstructorProps = Expand<
   }
 >
 
-const hatMesh = await createHat({
+const { meshes, materials } = await createHat({
   orientation: new Rotation(0, MathUtils.degToRad(180), 0),
   scale: 0.8,
 })
@@ -23,12 +23,12 @@ export class Hat extends Entity {
         filename: 'hat.bmp',
         sourcePath: './2d icons/',
       }),
-      model: EntityModel.fromThreeJsObj(hatMesh[0], {
+      model: EntityModel.fromThreeJsObj(meshes[0], {
         filename: 'hat.ftl',
         originIdx: 871,
         actionPoints: [{ name: 'bottom', vertexIdx: 1001, action: -1, sfx: -1 }],
       }),
-      otherDependencies: hatTextures,
+      otherDependencies: materials,
       ...props,
     })
 
