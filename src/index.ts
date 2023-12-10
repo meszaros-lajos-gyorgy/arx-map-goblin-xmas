@@ -23,6 +23,7 @@ import { createGarlandLong } from './prefabs/garlandLong.js'
 import { createGarlandRound } from './prefabs/garlandRound.js'
 import { createGiftBox } from './prefabs/giftBox.js'
 import { createPaperWrapRoll } from './prefabs/paperWrapRoll.js'
+import { createVendingMachine } from './prefabs/vendingMachine.js'
 
 const settings = new Settings()
 
@@ -86,7 +87,11 @@ const { meshes: garlandRound } = await createGarlandRound({
   orientation: new Rotation(0, MathUtils.degToRad(180), 0),
 })
 
-const prefabs = [xmasTree, giftBox, paperWrapRoll, garlandLong, garlandRound]
+const { meshes: vendingMachine } = await createVendingMachine({
+  position: new Vector3(-300, 0, 0),
+})
+
+const prefabs = [xmasTree, giftBox, paperWrapRoll, garlandLong, garlandRound, vendingMachine]
 
 prefabs.flat().forEach((mesh) => {
   applyTransformations(mesh)
