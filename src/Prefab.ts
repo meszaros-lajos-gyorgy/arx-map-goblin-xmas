@@ -26,6 +26,10 @@ export type PrefabConstructorProps = {
    * default value is false
    */
   flipUVVertically?: boolean
+  /**
+   * default value is false
+   */
+  flipUVHorizontally?: boolean
 }
 
 export type PrefabLoadProps = {
@@ -41,6 +45,7 @@ export class Prefab {
   internalScale: number
   yAxisAdjustment: number
   flipUVVertically: boolean
+  flipUVHorizontally: boolean
 
   constructor({
     filenameWithoutExtension,
@@ -49,6 +54,7 @@ export class Prefab {
     internalScale = 1,
     yAxisAdjustment = 0,
     flipUVVertically = false,
+    flipUVHorizontally = false,
   }: PrefabConstructorProps) {
     this.filenameWithoutExtension = filenameWithoutExtension
     this.objFolder = objFolder
@@ -56,15 +62,18 @@ export class Prefab {
     this.internalScale = internalScale
     this.yAxisAdjustment = yAxisAdjustment
     this.flipUVVertically = flipUVVertically
+    this.flipUVHorizontally = flipUVHorizontally
   }
 
   async load({ position = new Vector3(0, 0, 0), orientation, scale: rawScale = 1 }: PrefabLoadProps = {}) {
     const scale = this.internalScale * rawScale
 
+    const scaleUV = new Vector2(this.flipUVHorizontally ? -1 : 1, this.flipUVVertically ? -1 : 1)
+
     return loadOBJ(path.join(this.objFolder, this.filenameWithoutExtension), {
       position: position.clone().add(new Vector3(0, this.yAxisAdjustment * scale, 0)),
       scale,
-      ...(this.flipUVVertically ? { scaleUV: new Vector2(1, -1) } : {}),
+      scaleUV,
       orientation,
       materialFlags: (texture, flags) => {
         if (!texture.isInternalAsset) {
