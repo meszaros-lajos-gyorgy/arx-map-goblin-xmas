@@ -62,7 +62,6 @@ map.lights.push(...overheadLights)
 const { meshes: xmasTree } = await createXmasTree({
   position: new Vector3(-300, 0, 300),
   orientation: new Rotation(0, MathUtils.degToRad(90), 0),
-  scale: 0.8,
 })
 
 const { meshes: giftBox } = await createGiftBox({
