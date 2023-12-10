@@ -11,6 +11,7 @@ import {
   Texture,
   Vector3,
 } from 'arx-level-generator'
+import { LightDoor } from 'arx-level-generator/prefabs/entity'
 import { createPlaneMesh } from 'arx-level-generator/prefabs/mesh'
 import { Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
@@ -18,6 +19,8 @@ import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils
 import { MathUtils, Vector2 } from 'three'
 import { createXmasTree } from '@/prefabs/xmasTree.js'
 import { Hat } from './entities/hat.js'
+import { createGarlandLong } from './prefabs/garlandLong.js'
+import { createGarlandRound } from './prefabs/garlandRound.js'
 import { createGiftBox } from './prefabs/giftBox.js'
 import { createPaperWrapRoll } from './prefabs/paperWrapRoll.js'
 
@@ -73,7 +76,17 @@ const { meshes: paperWrapRoll } = await createPaperWrapRoll({
   position: new Vector3(300, 0, 100),
 })
 
-const prefabs = [xmasTree, giftBox, paperWrapRoll]
+const { meshes: garlandLong } = await createGarlandLong({
+  position: new Vector3(400, -100, 0),
+  orientation: new Rotation(0, MathUtils.degToRad(180), 0),
+})
+
+const { meshes: garlandRound } = await createGarlandRound({
+  position: new Vector3(400, -100, -225),
+  orientation: new Rotation(0, MathUtils.degToRad(180), 0),
+})
+
+const prefabs = [xmasTree, giftBox, paperWrapRoll, garlandLong, garlandRound]
 
 prefabs.flat().forEach((mesh) => {
   applyTransformations(mesh)
@@ -101,7 +114,12 @@ goblin.script?.on('initend', () => {
   return `attach ${hat.ref} "bottom" self "view_attach"`
 })
 
-map.entities.push(goblin, hat)
+const door = new LightDoor({
+  position: new Vector3(410, 0, -300),
+  orientation: new Rotation(0, MathUtils.degToRad(180), 0),
+})
+
+map.entities.push(goblin, hat, door)
 
 // ----------------------
 
