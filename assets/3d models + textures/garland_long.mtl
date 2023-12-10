@@ -1,0 +1,72 @@
+# Blender 4.0.2 MTL File: 'Long Garland.blend'
+# www.blender.org
+
+newmtl blue
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd 3D models/Arx Fatalis/Christmas mod/Texture/blue.png
+
+newmtl gold
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd 3D models/Arx Fatalis/Christmas mod/Texture/gold.png
+
+newmtl pine_needles
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd 3D models/Arx Fatalis/Christmas mod/Texture/pngwing.com.png
+map_d 3D models/Arx Fatalis/Christmas mod/Texture/pngwing.com.png
+
+newmtl pink
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd 3D models/Arx Fatalis/Christmas mod/Texture/pink.jpg
+
+newmtl red
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd 3D models/Arx Fatalis/Christmas mod/Texture/red.jpg
+
+newmtl red_glitter
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd 3D models/Arx Fatalis/Christmas mod/Texture/red_glitter.jpg
+
+newmtl yellow
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd 3D models/Arx Fatalis/Christmas mod/Texture/yellow.jpg

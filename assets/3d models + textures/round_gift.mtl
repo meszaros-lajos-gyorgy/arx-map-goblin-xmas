@@ -1,0 +1,22 @@
+# Blender 4.0.2 MTL File: 'Gift box.blend'
+# www.blender.org
+
+newmtl blue_ribbon
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd 3D models/Arx Fatalis/Christmas mod/Texture/blue_ribbon.jpg
+
+newmtl wrap1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd 3D models/Arx Fatalis/Christmas mod/Texture/wrap1.jpg
