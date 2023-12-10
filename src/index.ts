@@ -89,6 +89,7 @@ const { meshes: garlandRound } = await createGarlandRound({
 
 const { meshes: vendingMachine } = await createVendingMachine({
   position: new Vector3(-300, 0, 0),
+  orientation: new Rotation(0, MathUtils.degToRad(180), 0),
 })
 
 const prefabs = [xmasTree, giftBox, paperWrapRoll, garlandLong, garlandRound, vendingMachine]
@@ -116,7 +117,11 @@ const goblin = new Entity({
 })
 goblin.withScript()
 goblin.script?.on('initend', () => {
-  return `attach ${hat.ref} "bottom" self "view_attach"`
+  return `
+    TWEAK HEAD "goblin_nohelm"
+    setweapon none
+    attach ${hat.ref} "bottom" self "view_attach"
+  `
 })
 
 const door = new LightDoor({
