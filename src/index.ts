@@ -79,12 +79,10 @@ const { meshes: paperWrapRoll } = await createPaperWrapRoll({
 
 const { meshes: garlandLong } = await createGarlandLong({
   position: new Vector3(400, -100, 0),
-  orientation: new Rotation(0, MathUtils.degToRad(180), 0),
 })
 
 const { meshes: garlandRound } = await createGarlandRound({
   position: new Vector3(400, -100, -225),
-  orientation: new Rotation(0, MathUtils.degToRad(180), 0),
 })
 
 const { meshes: vendingMachine } = await createVendingMachine({
