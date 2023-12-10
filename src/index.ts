@@ -19,6 +19,7 @@ import { MathUtils, Vector2 } from 'three'
 import { createXmasTree } from '@/prefabs/xmasTree.js'
 import { Hat } from './entities/hat.js'
 import { createGiftBox } from './prefabs/giftBox.js'
+import { createPaperWrapRoll } from './prefabs/paperWrapRoll.js'
 
 const settings = new Settings()
 
@@ -68,7 +69,11 @@ const { meshes: giftBox } = await createGiftBox({
   position: new Vector3(300, 0, 250),
 })
 
-const prefabs = [xmasTree, giftBox]
+const { meshes: paperWrapRoll } = await createPaperWrapRoll({
+  position: new Vector3(300, 0, 100),
+})
+
+const prefabs = [xmasTree, giftBox, paperWrapRoll]
 
 prefabs.flat().forEach((mesh) => {
   applyTransformations(mesh)
