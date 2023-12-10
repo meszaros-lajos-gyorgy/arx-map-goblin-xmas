@@ -58,9 +58,11 @@ export class Prefab {
     this.flipUVVertically = flipUVVertically
   }
 
-  async load({ position = new Vector3(0, 0, 0), orientation, scale = 1 }: PrefabLoadProps = {}) {
+  async load({ position = new Vector3(0, 0, 0), orientation, scale: rawScale = 1 }: PrefabLoadProps = {}) {
+    const scale = this.internalScale * rawScale
+
     return loadOBJ(path.join(this.objFolder, this.filenameWithoutExtension), {
-      position: position.clone().add(new Vector3(0, this.yAxisAdjustment * this.internalScale, 0)),
+      position: position.clone().add(new Vector3(0, this.yAxisAdjustment * scale, 0)),
       scale,
       ...(this.flipUVVertically ? { scaleUV: new Vector2(1, -1) } : {}),
       orientation,
