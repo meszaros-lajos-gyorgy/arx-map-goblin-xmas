@@ -6,6 +6,13 @@ const prefab = new Prefab({
   internalScale: 0.2,
   flipUVVertically: true,
   flipUVHorizontally: true,
+  materialFlags: (texture, defaultFlags) => {
+    if (texture.filename === '05glass.jpg') {
+      texture.filename = '05GlassCola.jpg'
+    }
+
+    return defaultFlags
+  },
 })
 
 export const createVendingMachine = prefab.load.bind(prefab)

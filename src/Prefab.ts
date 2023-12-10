@@ -1,5 +1,6 @@
 import path from 'node:path'
-import { Rotation, Vector3 } from 'arx-level-generator'
+import { ArxPolygonFlags } from 'arx-convert/types'
+import { Rotation, Texture, Vector3 } from 'arx-level-generator'
 import { loadOBJ } from 'arx-level-generator/tools/mesh'
 import { Vector2 } from 'three'
 import { objFolder as defaultObjFolder, textureFolder as defaultTextureFolder } from '@/constants.js'
@@ -30,6 +31,7 @@ export type PrefabConstructorProps = {
    * default value is false
    */
   flipUVHorizontally?: boolean
+  materialFlags?: (texture: Texture, defaultFlags: ArxPolygonFlags) => ArxPolygonFlags
 }
 
 export type PrefabLoadProps = {
@@ -46,6 +48,7 @@ export class Prefab {
   yAxisAdjustment: number
   flipUVVertically: boolean
   flipUVHorizontally: boolean
+  materialFlags: ((texture: Texture, defaultFlags: ArxPolygonFlags) => ArxPolygonFlags) | undefined
 
   constructor({
     filenameWithoutExtension,
@@ -55,6 +58,7 @@ export class Prefab {
     yAxisAdjustment = 0,
     flipUVVertically = false,
     flipUVHorizontally = false,
+    materialFlags,
   }: PrefabConstructorProps) {
     this.filenameWithoutExtension = filenameWithoutExtension
     this.objFolder = objFolder
@@ -63,6 +67,7 @@ export class Prefab {
     this.yAxisAdjustment = yAxisAdjustment
     this.flipUVVertically = flipUVVertically
     this.flipUVHorizontally = flipUVHorizontally
+    this.materialFlags = materialFlags
   }
 
   async load({ position = new Vector3(0, 0, 0), orientation, scale: rawScale = 1 }: PrefabLoadProps = {}) {
@@ -79,7 +84,11 @@ export class Prefab {
         if (!texture.isInternalAsset) {
           texture.sourcePath = this.textureFolder
         }
-        return flags
+        if (this.materialFlags) {
+          return this.materialFlags(texture, flags)
+        } else {
+          return flags
+        }
       },
     })
   }
