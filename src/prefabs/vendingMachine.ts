@@ -1,7 +1,7 @@
 import { Prefab } from '@/Prefab.js'
 
 const prefab = new Prefab({
-  filenameWithoutExtension: 'vending_machine',
+  filenameWithoutExtension: 'vending_machine_nobuttons',
   yAxisAdjustment: -600,
   internalScale: 0.19,
   flipUVVertically: true,
