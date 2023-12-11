@@ -25,8 +25,10 @@ export class Hat extends Entity {
       }),
       model: EntityModel.fromThreeJsObj(meshes[0], {
         filename: 'hat.ftl',
-        originIdx: 871,
-        actionPoints: [{ name: 'bottom', vertexIdx: 1001, action: -1, sfx: -1 }],
+        // originIdx: 871,
+        // actionPoints: [{ name: 'bottom', vertexIdx: 1001, action: -1, sfx: -1 }],
+        originIdx: 0,
+        actionPoints: [{ name: 'bottom', vertexIdx: 0, action: -1, sfx: -1 }],
       }),
       otherDependencies: materials,
       ...props,
