@@ -119,6 +119,7 @@ goblin.script?.on('initend', () => {
     TWEAK HEAD "goblin_nohelm"
     setweapon none
     attach ${hat.ref} "bottom" self "view_attach"
+    setspeed 0.1
   `
 })
 

@@ -1,7 +1,7 @@
 import { Expand } from 'arx-convert/utils'
 import { Entity, EntityConstructorPropsWithoutSrc, EntityModel, Rotation, Texture } from 'arx-level-generator'
 import { Shadow } from 'arx-level-generator/scripting/properties'
-import { MathUtils } from 'three'
+import { BufferGeometry, MathUtils } from 'three'
 import { createHat } from '@/prefabs/hat.js'
 
 type HatConstructorProps = Expand<
@@ -15,6 +15,10 @@ const { meshes, materials } = await createHat({
   scale: 0.8,
 })
 
+const getNumberOfVertices = (geometry: BufferGeometry) => {
+  return geometry.getAttribute('position').array.length / 3 - 1
+}
+
 export class Hat extends Entity {
   constructor({ ...props }: HatConstructorProps = {}) {
     super({
@@ -25,10 +29,15 @@ export class Hat extends Entity {
       }),
       model: EntityModel.fromThreeJsObj(meshes[0], {
         filename: 'hat.ftl',
-        // originIdx: 871,
-        // actionPoints: [{ name: 'bottom', vertexIdx: 1001, action: -1, sfx: -1 }],
-        originIdx: 0,
-        actionPoints: [{ name: 'bottom', vertexIdx: 0, action: -1, sfx: -1 }],
+        originIdx: 871,
+        actionPoints: [
+          {
+            name: 'bottom',
+            vertexIdx: getNumberOfVertices(meshes[0].geometry),
+            action: -1,
+            sfx: -1,
+          },
+        ],
       }),
       otherDependencies: materials,
       ...props,

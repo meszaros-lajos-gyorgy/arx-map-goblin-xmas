@@ -1,80 +1,63 @@
-import { DoubleOf, TripleOf } from 'arx-convert/utils'
-import { Texture } from 'arx-level-generator'
-import { toArxCoordinateSystem } from 'arx-level-generator/tools/mesh'
+import { Texture, Vector3 } from 'arx-level-generator'
+import { circleOfVectors } from 'arx-level-generator/utils'
 import { BufferAttribute, BufferGeometry, Mesh, MeshBasicMaterial } from 'three'
 import { Prefab, PrefabLoadProps } from '@/Prefab.js'
 
 const prefab = new Prefab({
   filenameWithoutExtension: 'Hat',
   yAxisAdjustment: -130,
-  internalScale: 0.09,
+  internalScale: 0.08,
 })
 
 export const createHat = async (props: PrefabLoadProps) => {
-  const { meshes, materials } = await prefab.load(props)
+  const { meshes: _meshes, materials } = await prefab.load(props)
 
   // -------------------------
 
-  const _geometry = meshes[0].geometry
+  const adjustment = new Vector3(-150, -50, 63)
 
-  const index = _geometry.getIndex()
-  const _position = _geometry.getAttribute('position') as BufferAttribute
-  const _normals = _geometry.getAttribute('normal') as BufferAttribute
-  const _uvs = _geometry.getAttribute('uv') as BufferAttribute
+  const alphaMaterial = new MeshBasicMaterial({ map: Texture.alpha })
 
-  const vertices: { pos: TripleOf<number>; norm: TripleOf<number>; uv: DoubleOf<number> }[] = []
+  const meshes = _meshes.map(({ material, geometry: _geometry }) => {
+    const materials = Array.isArray(material) ? material : [material]
 
-  if (index === null) {
-    // non-indexed geometry, all vertices are unique
-    for (let idx = 0; idx < _position.count; idx++) {
-      vertices.push({
-        pos: [_position.getX(idx), _position.getY(idx), _position.getZ(idx)],
-        norm: [_normals.getX(idx), _normals.getY(idx), _normals.getZ(idx)],
-        uv: [_uvs.getX(idx), _uvs.getY(idx)],
-      })
-    }
-  } else {
-    // indexed geometry, has shared vertices
-    for (let i = 0; i < index.count; i++) {
-      const idx = index.getX(i)
-      vertices.push({
-        pos: [_position.getX(idx), _position.getY(idx), _position.getZ(idx)],
-        norm: [_normals.getX(idx), _normals.getY(idx), _normals.getZ(idx)],
-        uv: [_uvs.getX(idx), _uvs.getY(idx)],
-      })
-    }
-  }
+    const positions = [..._geometry.getAttribute('position').array]
+    const normals = [..._geometry.getAttribute('normal').array]
+    const uvs = [..._geometry.getAttribute('uv').array]
+    const groups = [..._geometry.groups]
 
-  // -------------------------
+    const numberOfPolygons = positions.length
+    const numberOfMaterials = materials.length
 
-  const positions = []
-  const normals = []
-  const uvs = []
-  for (const vertex of vertices) {
-    positions.push(...vertex.pos)
-    normals.push(...vertex.norm)
-    uvs.push(...vertex.uv)
-  }
+    // ---------
 
-  // -------------------------
+    adjustment.multiply(prefab.internalScale)
 
-  const geometry = new BufferGeometry()
-  geometry.setAttribute('position', new BufferAttribute(new Float32Array(positions), 3))
-  geometry.setAttribute('normal', new BufferAttribute(new Float32Array(normals), 3))
-  geometry.setAttribute('uv', new BufferAttribute(new Float32Array(uvs), 2))
+    circleOfVectors(adjustment, 1, 3).forEach((point) => {
+      positions.push(-point.x, -point.y, -point.z)
+      normals.push(0, -1, 0)
+      uvs.push(point.x - adjustment.x, point.z - adjustment.z)
+    })
 
-  geometry.scale(5, 5, 5)
+    groups.push({ start: numberOfPolygons, count: 1, materialIndex: numberOfMaterials })
 
-  const _meshes = [
-    new Mesh(
-      geometry,
-      new MeshBasicMaterial({
-        map: Texture.l3DissidStoneTrans01,
-      }),
-    ),
-  ]
+    materials.push(alphaMaterial)
+
+    // ---------
+
+    const geometry = new BufferGeometry()
+    geometry.setAttribute('position', new BufferAttribute(new Float32Array(positions), 3))
+    geometry.setAttribute('normal', new BufferAttribute(new Float32Array(normals), 3))
+    geometry.setAttribute('uv', new BufferAttribute(new Float32Array(uvs), 2))
+
+    groups.forEach(({ start, count, materialIndex }) => {
+      geometry.addGroup(start, count, materialIndex)
+    })
+
+    return new Mesh(geometry, materials)
+  })
 
   // -------------------------
 
-  return { meshes: _meshes, materials }
+  return { meshes, materials }
 }
