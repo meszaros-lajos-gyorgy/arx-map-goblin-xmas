@@ -27,7 +27,7 @@ export const createHat = async (props: PrefabLoadProps) => {
     const uvs = [..._geometry.getAttribute('uv').array]
     const groups = [..._geometry.groups]
 
-    const numberOfPolygons = positions.length
+    const numberOfPolygons = positions.length / 3
     const numberOfMaterials = materials.length
 
     // ---------
@@ -40,7 +40,7 @@ export const createHat = async (props: PrefabLoadProps) => {
       uvs.push(point.x - attachmentPoint.x, point.z - attachmentPoint.z)
     })
 
-    groups.push({ start: numberOfPolygons, count: 1, materialIndex: numberOfMaterials })
+    groups.push({ start: numberOfPolygons, count: 3, materialIndex: numberOfMaterials })
 
     materials.push(alphaMaterial)
 
