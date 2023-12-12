@@ -14,10 +14,11 @@ export const createHat = async (props: PrefabLoadProps) => {
 
   // -------------------------
 
-  const adjustment = new Vector3(-150, -50, 63)
-
   const alphaMaterial = new MeshBasicMaterial({ map: Texture.alpha })
 
+  // adds a polygon to the model which could be used as an attachment point later
+
+  const attachmentPoint = new Vector3(180, 50, -63)
   const meshes = _meshes.map(({ material, geometry: _geometry }) => {
     const materials = Array.isArray(material) ? material : [material]
 
@@ -31,12 +32,12 @@ export const createHat = async (props: PrefabLoadProps) => {
 
     // ---------
 
-    adjustment.multiply(prefab.internalScale)
+    attachmentPoint.multiply(prefab.internalScale)
 
-    circleOfVectors(adjustment, 1, 3).forEach((point) => {
-      positions.push(-point.x, -point.y, -point.z)
+    circleOfVectors(attachmentPoint, 1, 3).forEach((point) => {
+      positions.push(point.x, point.y, point.z)
       normals.push(0, -1, 0)
-      uvs.push(point.x - adjustment.x, point.z - adjustment.z)
+      uvs.push(point.x - attachmentPoint.x, point.z - attachmentPoint.z)
     })
 
     groups.push({ start: numberOfPolygons, count: 1, materialIndex: numberOfMaterials })
