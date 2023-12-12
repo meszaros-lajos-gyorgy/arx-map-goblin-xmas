@@ -19,6 +19,7 @@ import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils
 import { MathUtils, Vector2 } from 'three'
 import { createXmasTree } from '@/prefabs/xmasTree.js'
 import { Hat } from './entities/hat.js'
+import { createCoinSlot } from './prefabs/coinSlot.js'
 import { createGarlandLong } from './prefabs/garlandLong.js'
 import { createGarlandRound } from './prefabs/garlandRound.js'
 import { createGiftBox } from './prefabs/giftBox.js'
@@ -90,7 +91,11 @@ const { meshes: vendingMachine } = await createVendingMachine({
   orientation: new Rotation(0, MathUtils.degToRad(180), 0),
 })
 
-const prefabs = [xmasTree, giftBox, paperWrapRoll, garlandLong, garlandRound, vendingMachine]
+const { meshes: coinSlot } = await createCoinSlot({
+  position: new Vector3(-300, 0, -200),
+})
+
+const prefabs = [xmasTree, giftBox, paperWrapRoll, garlandLong, garlandRound, vendingMachine, coinSlot]
 
 prefabs.flat().forEach((mesh) => {
   applyTransformations(mesh)
