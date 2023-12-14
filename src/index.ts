@@ -16,13 +16,14 @@ import { createPlaneMesh } from 'arx-level-generator/prefabs/mesh'
 import { Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
 import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils'
-import { MathUtils, Vector2 } from 'three'
+import { Box3, MathUtils, Vector2 } from 'three'
 import { createXmasTree } from '@/prefabs/xmasTree.js'
 import { Hat } from './entities/hat.js'
 import { createCoinSlot } from './prefabs/coinSlot.js'
 import { createGarlandLong } from './prefabs/garlandLong.js'
 import { createGarlandRound } from './prefabs/garlandRound.js'
 import { createGiftBox } from './prefabs/giftBox.js'
+import { createHat } from './prefabs/hat.js'
 import { createPaperWrapRoll } from './prefabs/paperWrapRoll.js'
 import { createVendingMachine } from './prefabs/vendingMachine.js'
 
@@ -66,7 +67,7 @@ map.lights.push(...overheadLights)
 // ----------------------
 
 const { meshes: xmasTree } = await createXmasTree({
-  position: new Vector3(-300, 0, 300),
+  position: new Vector3(-300, 20, 300),
   orientation: new Rotation(0, MathUtils.degToRad(90), 0),
 })
 
@@ -95,6 +96,8 @@ const { meshes: coinSlot } = await createCoinSlot({
   position: new Vector3(-300, 0, -200),
 })
 
+// ---------------------------
+
 const prefabs = [xmasTree, giftBox, paperWrapRoll, garlandLong, garlandRound, vendingMachine, coinSlot]
 
 prefabs.flat().forEach((mesh) => {
@@ -108,7 +111,7 @@ prefabs.flat().forEach((mesh) => {
 
 // ----------------------
 
-const hat = new Hat({
+const hatOnGoblin = new Hat({
   position: new Vector3(0, 0, 300),
 })
 
@@ -123,8 +126,8 @@ goblin.script?.on('initend', () => {
   return `
     TWEAK HEAD "goblin_nohelm"
     setweapon none
-    attach ${hat.ref} "bottom" self "view_attach"
-    setspeed 0.1
+    attach ${hatOnGoblin.ref} "view_attach" self "view_attach"
+    setspeed 0.01
   `
 })
 
@@ -133,7 +136,11 @@ const door = new LightDoor({
   orientation: new Rotation(0, MathUtils.degToRad(180), 0),
 })
 
-map.entities.push(goblin, hat, door)
+const hatOnFloor = new Hat({
+  position: new Vector3(100, 0, 300),
+})
+
+map.entities.push(goblin, hatOnGoblin, door, hatOnFloor)
 
 // ----------------------
 

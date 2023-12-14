@@ -20,10 +20,6 @@ export type PrefabConstructorProps = {
    */
   internalScale?: number | Vector3
   /**
-   * default value is 0
-   */
-  yAxisAdjustment?: number
-  /**
    * default value is false
    */
   flipUVVertically?: boolean
@@ -59,7 +55,6 @@ export class Prefab {
   textureFolder: string
   internalScale: Vector3
   internalScaleUV: Vector2
-  yAxisAdjustment: number
   materialFlags: ((texture: Texture, defaultFlags: ArxPolygonFlags) => ArxPolygonFlags) | undefined
 
   constructor({
@@ -67,7 +62,6 @@ export class Prefab {
     objFolder = defaultObjFolder,
     textureFolder = defaultTextureFolder,
     internalScale = 1,
-    yAxisAdjustment = 0,
     flipUVVertically = false,
     flipUVHorizontally = false,
     flipPolygonAxisX = false,
@@ -90,7 +84,6 @@ export class Prefab {
 
     this.internalScaleUV = new Vector2(flipUVHorizontally ? -1 : 1, flipUVVertically ? -1 : 1)
 
-    this.yAxisAdjustment = yAxisAdjustment
     this.materialFlags = materialFlags
   }
 
@@ -98,10 +91,12 @@ export class Prefab {
     const scale = this.internalScale.multiplyScalar(rawScale)
 
     return loadOBJ(path.join(this.objFolder, this.filenameWithoutExtension), {
-      position: position.clone().add(new Vector3(0 * scale.x, this.yAxisAdjustment * scale.y, 0 * scale.z)),
+      position,
       scale,
       scaleUV: this.internalScaleUV,
       orientation,
+      centralize: true,
+      verticalAlign: 'bottom',
       materialFlags: (texture, flags) => {
         if (!texture.isInternalAsset) {
           texture.sourcePath = this.textureFolder
