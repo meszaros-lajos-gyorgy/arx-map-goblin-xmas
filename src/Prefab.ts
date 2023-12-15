@@ -41,6 +41,10 @@ export type PrefabConstructorProps = {
    */
   flipPolygonAxisZ?: boolean
   materialFlags?: (texture: Texture, defaultFlags: ArxPolygonFlags) => ArxPolygonFlags
+  /**
+   * default value is false
+   */
+  centralize?: boolean
 }
 
 export type PrefabLoadProps = {
@@ -56,6 +60,7 @@ export class Prefab {
   internalScale: Vector3
   internalScaleUV: Vector2
   materialFlags: ((texture: Texture, defaultFlags: ArxPolygonFlags) => ArxPolygonFlags) | undefined
+  centralize: boolean
 
   constructor({
     filenameWithoutExtension,
@@ -68,6 +73,7 @@ export class Prefab {
     flipPolygonAxisY = false,
     flipPolygonAxisZ = false,
     materialFlags,
+    centralize = false,
   }: PrefabConstructorProps) {
     this.filenameWithoutExtension = filenameWithoutExtension
     this.objFolder = objFolder
@@ -85,6 +91,7 @@ export class Prefab {
     this.internalScaleUV = new Vector2(flipUVHorizontally ? -1 : 1, flipUVVertically ? -1 : 1)
 
     this.materialFlags = materialFlags
+    this.centralize = centralize
   }
 
   async load({ position = new Vector3(0, 0, 0), orientation, scale: rawScale = 1 }: PrefabLoadProps = {}) {
@@ -95,7 +102,7 @@ export class Prefab {
       scale,
       scaleUV: this.internalScaleUV,
       orientation,
-      centralize: true,
+      centralize: this.centralize,
       verticalAlign: 'bottom',
       materialFlags: (texture, flags) => {
         if (!texture.isInternalAsset) {

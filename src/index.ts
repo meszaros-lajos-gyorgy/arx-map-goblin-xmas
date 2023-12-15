@@ -13,7 +13,8 @@ import {
 } from 'arx-level-generator'
 import { LightDoor } from 'arx-level-generator/prefabs/entity'
 import { createPlaneMesh } from 'arx-level-generator/prefabs/mesh'
-import { Speed } from 'arx-level-generator/scripting/properties'
+import { useDelay } from 'arx-level-generator/scripting/hooks'
+import { Label, Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
 import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils'
 import { Box3, MathUtils, Vector2 } from 'three'
@@ -67,7 +68,7 @@ map.lights.push(...overheadLights)
 // ----------------------
 
 const { meshes: xmasTree } = await createXmasTree({
-  position: new Vector3(-300, 20, 300),
+  position: new Vector3(-300, 0, 300),
   orientation: new Rotation(0, MathUtils.degToRad(90), 0),
 })
 
@@ -115,18 +116,26 @@ const hatOnGoblin = new Hat({
   position: new Vector3(0, 0, 300),
 })
 
+const chicken = new Entity({
+  src: 'npc/chicken_base',
+  id: 1000,
+})
+
 const goblin = new Entity({
-  src: 'npc/goblin_base/',
+  src: 'npc/goblin_base',
   id: 1000,
   position: new Vector3(0, 0, 200),
   orientation: new Rotation(0, MathUtils.degToRad(180), 0),
 })
 goblin.withScript()
 goblin.script?.on('initend', () => {
+  const { delay } = useDelay()
   return `
+    ${new Label('[goblin-name]')}
     TWEAK HEAD "goblin_nohelm"
     setweapon none
-    attach ${hatOnGoblin.ref} "view_attach" self "view_attach"
+    attach ${hatOnGoblin.ref} view_attach self view_attach
+    ${delay(100)} attach ${chicken.ref} view_attach self left_attach
     setspeed 0.01
   `
 })
@@ -137,10 +146,10 @@ const door = new LightDoor({
 })
 
 const hatOnFloor = new Hat({
-  position: new Vector3(100, 0, 300),
+  position: new Vector3(200, 0, 300),
 })
 
-map.entities.push(goblin, hatOnGoblin, door, hatOnFloor)
+map.entities.push(hatOnGoblin, chicken, goblin, door, hatOnFloor)
 
 // ----------------------
 
