@@ -1,4 +1,4 @@
-# arx-map-goblin-xmas
+# Goblin Christmas
 
 An Arx Fatalis map where you help the goblins prepare for the festive season
 
