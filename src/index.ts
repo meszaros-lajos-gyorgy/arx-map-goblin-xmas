@@ -29,6 +29,9 @@ import { createVendingMachine } from './prefabs/vendingMachine.js'
 
 const settings = new Settings()
 
+const map = await ArxMap.fromOriginalLevel(2, settings)
+
+/*
 const map = new ArxMap()
 map.config.offset = new Vector3(6000, 0, 6000)
 map.player.position.adjustToPlayerHeight()
@@ -37,11 +40,13 @@ if (settings.mode === 'development') {
   map.player.script?.properties.push(new Speed(2))
 }
 map.hud.hide(HudElements.Minimap)
+*/
 
 await map.i18n.addFromFile('./i18n.json', settings)
 
 // ----------------------
 
+/*
 const plane = createPlaneMesh({
   size: new Vector2(1000, 1000),
   texture: new Texture({ filename: 'L1_DRAGON_[ICE]_GROUND05.jpg' }),
@@ -63,14 +68,19 @@ const overheadLights = circleOfVectors(new Vector3(0, -800, 0), 300, 3).map((pos
   })
 })
 map.lights.push(...overheadLights)
+*/
 
 // ----------------------
 
+const centerOfGoblinMainHall = new Vector3(12450, 1100, 9975)
+
 const { meshes: xmasTree } = await createXmasTree({
-  position: new Vector3(-300, 0, 300),
+  position: new Vector3(0, 0, 500),
   orientation: new Rotation(0, MathUtils.degToRad(90), 0),
+  scale: 1.15,
 })
 
+/*
 const { meshes: giftBox } = await createGiftBox({
   position: new Vector3(300, 0, 250),
 })
@@ -95,16 +105,18 @@ const { meshes: vendingMachine } = await createVendingMachine({
 const { meshes: coinSlot } = await createCoinSlot({
   position: new Vector3(-300, 0, -200),
 })
+*/
 
 // ---------------------------
 
-const prefabs = [xmasTree, giftBox, paperWrapRoll, garlandLong, garlandRound, vendingMachine, coinSlot]
+// const prefabs = [xmasTree, giftBox, paperWrapRoll, garlandLong, garlandRound, vendingMachine, coinSlot]
+const prefabs = [xmasTree]
 
 prefabs.flat().forEach((mesh) => {
   applyTransformations(mesh)
-  mesh.translateX(map.config.offset.x)
-  mesh.translateY(map.config.offset.y)
-  mesh.translateZ(map.config.offset.z)
+  mesh.translateX(centerOfGoblinMainHall.x)
+  mesh.translateY(centerOfGoblinMainHall.y)
+  mesh.translateZ(centerOfGoblinMainHall.z)
   applyTransformations(mesh)
   map.polygons.addThreeJsMesh(mesh, { tryToQuadify: DONT_QUADIFY, shading: SHADING_SMOOTH })
 })
