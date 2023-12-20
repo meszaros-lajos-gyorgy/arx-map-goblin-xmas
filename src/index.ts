@@ -17,7 +17,7 @@ import { useDelay } from 'arx-level-generator/scripting/hooks'
 import { Label, Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
 import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils'
-import { MathUtils, Vector2 } from 'three'
+import { Box3, MathUtils, Vector2 } from 'three'
 import { createXmasTree } from '@/prefabs/xmasTree.js'
 import { Hat } from './entities/hat.js'
 import { createCoinSlot } from './prefabs/coinSlot.js'
@@ -30,6 +30,10 @@ import { createVendingMachine } from './prefabs/vendingMachine.js'
 const settings = new Settings()
 
 const map = await ArxMap.fromOriginalLevel(2, settings)
+
+const centerOfGoblinMainHall = new Vector3(12450, 1100, 9975)
+
+map.entities.empty()
 
 /*
 const map = new ArxMap()
@@ -71,8 +75,6 @@ map.lights.push(...overheadLights)
 */
 
 // ----------------------
-
-const centerOfGoblinMainHall = new Vector3(12450, 1100, 9975)
 
 const { meshes: xmasTree } = await createXmasTree({
   position: new Vector3(0, 0, 500),
