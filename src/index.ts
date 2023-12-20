@@ -16,7 +16,7 @@ import { createPlaneMesh } from 'arx-level-generator/prefabs/mesh'
 import { useDelay } from 'arx-level-generator/scripting/hooks'
 import { Label, Speed } from 'arx-level-generator/scripting/properties'
 import { createLight } from 'arx-level-generator/tools'
-import { applyTransformations, circleOfVectors } from 'arx-level-generator/utils'
+import { applyTransformations, circleOfVectors, pointToBox } from 'arx-level-generator/utils'
 import { Box3, MathUtils, Vector2 } from 'three'
 import { createXmasTree } from '@/prefabs/xmasTree.js'
 import { Hat } from './entities/hat.js'
@@ -33,18 +33,23 @@ const map = await ArxMap.fromOriginalLevel(2, settings)
 
 const centerOfGoblinMainHall = new Vector3(12450, 1100, 9975)
 
-map.entities.empty()
+const roomIdOfGoblinMainHall = map.polygons.sort((a, b) => {
+  const aDist = a.vertices[0].distanceTo(centerOfGoblinMainHall)
+  const bDist = b.vertices[0].distanceTo(centerOfGoblinMainHall)
+  return aDist - bDist
+})[0].room
 
-/*
-const map = new ArxMap()
-map.config.offset = new Vector3(6000, 0, 6000)
-map.player.position.adjustToPlayerHeight()
-map.player.withScript()
+// map.entities.empty()
+
 if (settings.mode === 'development') {
+  map.polygons.selectWithinBox(pointToBox(centerOfGoblinMainHall, 2000)).invertSelection().removeSelected()
+
+  map.player.withScript()
   map.player.script?.properties.push(new Speed(2))
+  map.player.script?.on('initend', () => {
+    return `teleport flee_marker_0041`
+  })
 }
-map.hud.hide(HudElements.Minimap)
-*/
 
 await map.i18n.addFromFile('./i18n.json', settings)
 
@@ -120,7 +125,11 @@ prefabs.flat().forEach((mesh) => {
   mesh.translateY(centerOfGoblinMainHall.y)
   mesh.translateZ(centerOfGoblinMainHall.z)
   applyTransformations(mesh)
-  map.polygons.addThreeJsMesh(mesh, { tryToQuadify: DONT_QUADIFY, shading: SHADING_SMOOTH })
+  map.polygons.addThreeJsMesh(mesh, {
+    tryToQuadify: DONT_QUADIFY,
+    shading: SHADING_SMOOTH,
+    room: roomIdOfGoblinMainHall,
+  })
 })
 
 // ----------------------
