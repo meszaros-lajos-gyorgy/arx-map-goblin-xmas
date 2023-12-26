@@ -142,6 +142,7 @@ const chicken = new Entity({
   src: 'npc/chicken_base',
   id: 1000,
 })
+chicken.withScript()
 
 const goblin = new Entity({
   src: 'npc/goblin_base',
