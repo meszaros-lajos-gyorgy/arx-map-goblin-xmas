@@ -155,8 +155,8 @@ goblin.script?.on('initend', () => {
   const { delay } = useDelay()
   return `
     ${new Label('[goblin-name]')}
-    TWEAK HEAD "goblin_nohelm"
     setweapon none
+    TWEAK HEAD "goblin_nohelm"
     attach ${hatOnGoblin.ref} view_attach self view_attach
     ${delay(100)} attach ${chicken.ref} view_attach self left_attach
     setspeed 0.01

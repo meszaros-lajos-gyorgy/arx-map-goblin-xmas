@@ -1,6 +1,7 @@
 import { Expand } from 'arx-convert/utils'
 import { Entity, EntityConstructorPropsWithoutSrc, EntityModel, Rotation, Texture } from 'arx-level-generator'
-import { Shadow } from 'arx-level-generator/scripting/properties'
+import { Sound, SoundFlags } from 'arx-level-generator/scripting/classes'
+import { Label, Material, Shadow } from 'arx-level-generator/scripting/properties'
 import { BufferGeometry } from 'three'
 import { createHat } from '@/prefabs/hat.js'
 
@@ -44,29 +45,32 @@ export class Hat extends Entity {
 
     this.withScript()
 
+    const equipArmorSound = new Sound('equip_armor', SoundFlags.None)
+
     this.script?.appendRaw(`
-ON INIT {
-  setname "christmas cap"
-  SET_MATERIAL CLOTH
-  SET_ARMOR_MATERIAL LEATHER
-  SET_GROUP ARMORY
-  SETPLAYERTWEAK MESH "human_leather_Black.teo"
-  SETOBJECTTYPE HELMET
-  SETEQUIP armor_class 2
-  SETEQUIP defense 2
-  SET_DURABILITY 100
+on init {
+  ${new Label('christmas cap')}
+  ${new Material('cloth')}
+  
+  set_armor_material leather
+  set_group armory
+  setplayertweak mesh "human_leather_Black.teo"
+  setobjecttype helmet
+  setequip armor_class 2
+  setequip defense 2
+  set_durability 100
   ${Shadow.off}
-  ACCEPT
+  accept
 }
 
-ON INVENTORYUSE {
-  EQUIP PLAYER
-  ACCEPT
+on inventoryuse {
+  equip player
+  accept
 }
 
-ON EQUIPIN {
-  PLAY "equip_armor"
-  ACCEPT
+on equipin {
+  ${equipArmorSound.play()}
+  accept
 }
     `)
   }
